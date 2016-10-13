@@ -1,0 +1,36 @@
+name: induscover
+version: 0.1
+summary: Discovers and enumerates PLCs in the local network
+description: This snap discovers and enumerates PLCs from different vendors and with different protocols in the host that gets passed to discover/plc/in and publishes the output in JSON format into a local MQTT topic discover/plc/out
+confinement: strict  # use "strict" to enforce system access only via declared interfaces
+grade: stable # use "stable" to assert the snap quality
+
+apps:
+    induscover:
+        command: bin/induscover
+        daemon: simple
+        plugs:
+          - network
+          - network-bind
+          - network-control
+parts:
+   nmap:
+     plugin: nil
+     stage-packages:
+       - nmap
+   induscover:
+     plugin: go
+     source: src/induscover
+   scripts:
+     plugin: dump
+     source: https://github.com/digitalbond/Redpoint.git
+     organize:
+      BACnet-discover-enumerate.nse: usr/share/nmap/scripts/BACnet-discover-enumerate.nse
+      codesys-v2-discover.nse: usr/share/nmap/scripts/codesys-v2-discover.nse
+      enip-enumerate.nse: usr/share/nmap/scripts/enip-enumerate.nse
+      fox-info.nse: usr/share/nmap/scripts/fox-info.nse
+      modicon-info.nse: usr/share/nmap/scripts/modicon-info.nse
+      omron-info.nse: usr/share/nmap/scripts/omron-info.nse
+      pcworx-info.nse: usr/share/nmap/scripts/pcworx-info.nse
+      proconos-info.nse: usr/share/nmap/scripts/proconos-info.nse
+      s7-enumerate.nse: usr/share/nmap/scripts/s7-enumerate.nse

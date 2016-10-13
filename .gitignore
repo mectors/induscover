@@ -1,0 +1,6 @@
+*.snap
+prime
+parts
+stage
+tmp
+.remote-sync.json
